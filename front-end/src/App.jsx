@@ -1,11 +1,11 @@
 import Footer from './components/Footer'
 import './App.css'
-import GameHistory from './components/GameHistory'
+import GameStory from './components/GameStory'
 
 function App() {
   return (
     <>
-      <GameHistory />
+      <GameStory />
       <Footer />
     </>
   )
