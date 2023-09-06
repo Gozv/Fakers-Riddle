@@ -8,3 +8,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
   </React.StrictMode>,
 )
+
+<h1 class="text-3x1 font-bold underline"> Holaaaaa</h1>
