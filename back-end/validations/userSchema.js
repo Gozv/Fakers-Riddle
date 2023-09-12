@@ -4,24 +4,18 @@ export const userBodySchema = Joi.object({
   firstName: Joi.string()
     .pattern(/^[a-zA-Z]+$/)
     .min(3)
-    .max(30)
-    .required(),
+    .max(30),
 
   lastName: Joi.string()
     .pattern(/^[a-zA-Z]+$/)
     .min(3)
-    .max(30)
-    .required(),
+    .max(30),
 
-  // userName: Joi.string()
-  //   .pattern()
-  //   .min()
-  //   .max()
-  //   .required(),
+  userName: Joi.string()
+    .min(7)
+    .max(8),
 
-  email: Joi.string().email().required(),
-
-  address: Joi.string().required(),
+  email: Joi.string().email(),
 
   password: Joi.string()
     .pattern(
@@ -29,7 +23,6 @@ export const userBodySchema = Joi.object({
     )
     .min(8)
     .max(20)
-    .required()
     .messages({
       'string.pattern.base':
         'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&)',
@@ -37,7 +30,10 @@ export const userBodySchema = Joi.object({
       'string.max': 'Password must not be longer than {#limit} characters'
     }),
 
-  birthday: Joi.date().required()
+  birthday: Joi.date(),
+
+  socketID: Joi.string()
+    .required()
 })
 
 export const paramsSchema = Joi.object({
