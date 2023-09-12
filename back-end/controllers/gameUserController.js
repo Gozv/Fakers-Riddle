@@ -4,13 +4,12 @@ import httpStatus from '../helpers/httpStatus.js'
 const gameUserController = () => {
   const createGameUser = async (request, response, next) => {
     try {
-      const { gameID, userID, characterID } = request.body
+      const { gameID, userID } = request.body
 
       const gameUser = await prisma.gameUser.create({
         data: {
           gameID,
-          userID,
-          characterID
+          userID
         }
       })
 
@@ -78,10 +77,32 @@ const gameUserController = () => {
     }
   }
 
+  const updateGameUser = async (request, response, next) => {
+    try {
+      const { id } = request.params
+      const { characterID } = request.body
+
+      const updatedGameUser = await prisma.gameUser.update({
+        where: {
+          id: Number(id)
+        },
+        data: {
+          characterID: Number(characterID)
+        }
+      })
+      return response.status(httpStatus.OK).json(updatedGameUser)
+    } catch (error) {
+      next(error)
+    } finally {
+      await prisma.$disconnect
+    }
+  }
+
   return {
     createGameUser,
     getGameUsers,
-    getGameUserById
+    getGameUserById,
+    updateGameUser
   }
 }
 
