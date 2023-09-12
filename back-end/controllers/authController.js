@@ -75,7 +75,8 @@ const authController = () => {
         userName,
         email,
         password,
-        birthday
+        birthday,
+        socketID
       } = request.body
 
       const salt = await bcrypt.genSalt(10)
@@ -89,7 +90,8 @@ const authController = () => {
           userName,
           email,
           birthday: new Date(birthday),
-          password: hashedPassword
+          password: hashedPassword,
+          socketID
         }
       })
       return response.status(httpStatus.CREATED).json(user)
