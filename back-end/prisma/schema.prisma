@@ -19,6 +19,7 @@ model Users {
   birthday  DateTime
   role      String     @default("USER")
   password  String
+  socketID  String
   games     GameUser[]
   rooms     Rooms[]
   createdAt DateTime   @default(now()) @map("created_at")
