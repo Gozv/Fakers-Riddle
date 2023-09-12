@@ -54,8 +54,12 @@ const userController = () => {
         userName,
         email,
         password,
-        birthday
+        birthday,
+        socketID
       } = request.body
+
+      const user = request.user
+
       const salt = await bcrypt.genSalt(10)
       const hashedPassword = await bcrypt.hash(password, salt)
 
@@ -66,12 +70,14 @@ const userController = () => {
         },
 
         data: {
+          ...user,
           firstName,
           lastName,
           userName,
           email,
-          birthday: new Date(birthday),
-          password: hashedPassword
+          password: hashedPassword,
+          birthday,
+          socketID
         }
       })
 
