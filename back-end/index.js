@@ -1,5 +1,9 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import http from 'http'
+import cors from 'cors'
+import { Server } from 'socket.io'
+import socketServer from './socket.js'
 import { expressjwt as jwt } from 'express-jwt'
 import errorHandler from './middlewares/errorHandler.js'
 import { authRoutes } from './router/authRouter.js'
@@ -14,6 +18,17 @@ dotenv.config()
 const PORT = process.env.PORT || 3000
 
 const app = express()
+const httpServer = http.createServer(app)
+const io = new Server(httpServer, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+})
+
+app.use(cors())
+
+socketServer(io)
 
 app.use(
   jwt({
@@ -28,4 +43,6 @@ app.use('/api', authRoutes(), userRoutes(), characterRoutes(), roomRoutes(), gam
 
 app.use(errorHandler)
 
-app.listen(PORT)
+httpServer.listen(PORT, () => {
+  console.log(`Server up! 🚀 PORT: ${PORT}`)
+})
