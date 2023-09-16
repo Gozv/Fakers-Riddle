@@ -21,6 +21,11 @@ function Chat () {
     setMessage('');
   }
   
+  const handleDisconnect = () => {
+    socket.disconnect()
+    window.location = '/'
+  }
+
   useEffect(() => {
     console.log(`Unido a la sala: ${roomName}`);
     socket.emit('joinRoom', roomName);
@@ -36,18 +41,9 @@ function Chat () {
     }
   }, [])
   
-  
     return (
-      <div className='h-screen bg-zinc-800 text-white flex items-center justify-center'>
-      <form onSubmit={handleSubmit} className='bg-zinc-900 p-10'>
-          <input
-            type='text'
-            name='message'
-            placeholder='Type a message here...'
-            onChange={(e) => setMessage(e.target.value)}
-            className='border-2 border-zinc-500 p-2 w-full text-black'
-            required
-          />
+      <div className='h-screen bg-zinc-800 text-white flex items-center justify-center relative'>
+      <form onSubmit={handleSubmit} className='bg-zinc-900 p-10 absolute max-h-500'>
           <ul>
             {
               messages.map((message, index) => (
@@ -60,7 +56,17 @@ function Chat () {
               ))
             }
           </ul>
+            <input
+              type='text'
+              name='message'
+              value={message}
+              placeholder='Type a message here...'
+              onChange={(e) => setMessage(e.target.value)}
+              className='border-2 border-zinc-500 p-2 w-full text-black'
+              required
+            />
       </form>
+      <button className='absolute bottom-0 right-0	bg-blue-300 w-25 h-10' onClick={handleDisconnect}>Disconnect</button>
 
     </div>
     )

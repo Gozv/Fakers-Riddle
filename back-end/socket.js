@@ -13,11 +13,11 @@ const socketServer = (io) => {
       })
 
       socket.on('connect', () => {
-        console.log('Conectado al servidor')
+        console.log(`Conectado a la sala ${roomName}`)
       })
 
       socket.on('disconnect', () => {
-        console.log('Desconectado del servidor')
+        console.log(`Desconectado de la sala ${roomName}`)
       })
     })
   })

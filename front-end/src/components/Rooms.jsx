@@ -5,13 +5,19 @@ function Rooms () {
     const [roomName, setRoomName] = useState('')
 
     const handleRoomNameChange = (e) => {
-        setRoomName(e.target.value)
+      setRoomName(e.target.value)
+    }
+
+    const handleEnterPress = (e) => {
+        if (e.key === 'Enter' && roomName.trim() !== '') {
+            window.location = `room/${roomName}`
+          }
     }
 
     return(
         <div className='rooms-container'>
-            <input type="text" placeholder='Write a name for the room' value={roomName} onChange={handleRoomNameChange} className='border-2 border-zinc-500 p-2 w-full text-black'/>
-            <Link to={`room/${roomName}`} className='enter-room-button'>Join room</Link>
+            <input type="text" placeholder='Write a name for the room' value={roomName} onChange={handleRoomNameChange} onKeyPress={handleEnterPress} className='border-2 border-zinc-500 p-2 w-full text-black'/>
+            <Link to={`room/${roomName}`}>Join room</Link>
         </div>
     )
 }
