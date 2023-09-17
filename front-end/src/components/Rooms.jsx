@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 function Rooms () {
     const [roomName, setRoomName] = useState('')
+    const [isPublic, setIsPublic] = useState(true)
 
     const handleRoomNameChange = (e) => {
       setRoomName(e.target.value)
@@ -11,13 +12,26 @@ function Rooms () {
     const handleEnterPress = (e) => {
         if (e.key === 'Enter' && roomName.trim() !== '') {
             window.location = `room/${roomName}`
-          }
+        }
     }
+
+    const handlePublicRoomChange = () => {
+        setIsPublic(() => !isPublic)
+    }
+
 
     return(
         <div className='rooms-container'>
-            <input type="text" placeholder='Write a name for the room' value={roomName} onChange={handleRoomNameChange} onKeyPress={handleEnterPress} className='border-2 border-zinc-500 p-2 w-full text-black'/>
-            <Link to={`room/${roomName}`}>Join room</Link>
+            <input type="text" placeholder='Write a name for the room' value={roomName} onChange={handleRoomNameChange} onKeyDown={handleEnterPress} className='border-2 border-zinc-500 p-2 w-full text-black'/>
+            <label>
+              Do you want the room to be public?
+               <input
+                  type="checkbox"
+                  checked={isPublic}
+                  onChange={handlePublicRoomChange}
+               />
+           </label>
+            <Link to={`/room/${roomName}`}>Join room</Link>
         </div>
     )
 }
