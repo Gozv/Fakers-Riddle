@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import authController from '../controllers/authController.js'
-import { userBodyValidation, authBodyValidation } from '../middlewares/validations.js'
+import { authBodyValidation } from '../middlewares/validations.js'
 
 export const authRoutes = () => {
   const authRouter = Router()
@@ -13,7 +13,7 @@ export const authRoutes = () => {
     .post(refresh)
 
   authRouter.route('/register')
-    .post(userBodyValidation, register)
+    .post(register)
 
   return authRouter
 }
