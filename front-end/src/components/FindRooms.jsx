@@ -6,7 +6,7 @@ function FindRooms() {
       <Form id="search-form" role="search">
         <input
           id="query"
-          aria-label="Search contacts"
+          aria-label="Search room"
           placeholder="Search"
           type="search"
           name="query"

@@ -3,13 +3,16 @@ import { Form, redirect } from "react-router-dom";
 export async function action({ request }) {
   const formData = await request.formData();
   const userData = Object.fromEntries(formData);
-  await fetch("http://localhost:3000/api/register", {
+  const response = await fetch("http://localhost:3000/api/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(userData),
   });
+
+  const data = await response.json()
+  console.log(data)
   return redirect("/login");
 }
 
