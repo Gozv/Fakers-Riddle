@@ -11,17 +11,79 @@ datasource db {
 }
 
 model Users {
-  id        Int       @id @default(autoincrement())
-  firstName String    @map("first_name")
-  lastName  String    @map("last_name")
-  userName  String    @unique @map("user_name")
-  email     String    @unique
+  id        Int        @id @default(autoincrement())
+  firstName String     @map("first_name")
+  lastName  String     @map("last_name")
+  userName  String     @unique @map("user_name")
+  email     String     @unique
   birthday  DateTime
-  role      String    @default("USER")
+  role      String     @default("USER")
   password  String
+  games     GameUser[]
+  rooms     Rooms[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  deletedAt DateTime?  @map("deleted_at")
+
+  @@map("users")
+}
+
+model Characters {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  image       String
+  players     GameUser[]
+
+  @@map("characters")
+}
+
+model Games {
+  id             Int        @id @default(autoincrement())
+  roomID         Int        @map("room_id")
+  Rooms          Rooms      @relation(fields: [roomID], references: [id])
+  numberOfFakers Int        @default(1) @map("number_of_fakers")
+  players        GameUser[]
+  isActive       Boolean    @map("is_active")
+  iniciatedAt    DateTime   @default(now()) @map("iniciated_at")
+  finishedAt     DateTime   @updatedAt @map("finished_at")
+
+  @@map("games")
+}
+
+model GameUser {
+  id          Int        @id @default(autoincrement())
+  gameID      Int        @map("game_id")
+  Game        Games      @relation(fields: [gameID], references: [id])
+  userID      Int        @map("user_id")
+  User        Users      @relation(fields: [userID], references: [id])
+  characterID Int        @map("character_id")
+  Character   Characters @relation(fields: [characterID], references: [id])
+  messages    Messages[]
+
+  @@map("game_user")
+}
+
+model Rooms {
+  id        Int       @id @default(autoincrement())
+  name      String
+  userID   Int       @map("user_id")
+  User      Users     @relation(fields: [userID], references: [id])
+  games     Games[]
+  isPublic  Boolean   @default(true) @map("is_public")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  @@map("users")
+  @@map("rooms")
+}
+
+model Messages {
+  id         Int      @id @default(autoincrement())
+  content    String
+  createdAt  DateTime @default(now()) @map("created_at")
+  gameUserID Int      @map("game_user_id")
+  GameUser   GameUser @relation(fields: [gameUserID], references: [id])
+
+  @@map("messages")
 }

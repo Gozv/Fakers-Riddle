@@ -1,4 +1,3 @@
-import React from "react";
 import githubLogo from '../assets/img/logo-github.svg'
 import linkedinLogo from '../assets/img/linkedin.svg'
 import './Footer.modules.css'
