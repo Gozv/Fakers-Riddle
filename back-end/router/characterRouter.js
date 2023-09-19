@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import characterController from '../controllers/characterController.js'
-// import { paramsValidation } from '../middlewares/validations.js'
+import { paramsValidation } from '../middlewares/validations.js'
 
 export const characterRoutes = () => {
   const characterRouter = Router()
@@ -13,7 +13,7 @@ export const characterRoutes = () => {
     .get(getCharacters)
 
   characterRouter.route('/characters/:id')
-    .get(getCharacterById)
+    .get(paramsValidation, getCharacterById)
 
   return characterRouter
 }

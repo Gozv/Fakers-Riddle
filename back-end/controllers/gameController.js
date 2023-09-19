@@ -66,14 +66,15 @@ const gameController = () => {
   const updateGame = async (request, response, next) => {
     try {
       const { id } = request.params
-      const { isActive } = request.body
+
+      const isActive = false
 
       const updatedGame = await prisma.games.update({
         where: {
           id: Number(id)
         },
         data: {
-          isActive: Boolean(isActive)
+          isActive
         }
       })
       return response.status(httpStatus.OK).json(updatedGame)

@@ -34,7 +34,7 @@ app.use(
   jwt({
     secret: process.env.SECRET_KEY,
     algorithms: ['HS256']
-  }).unless({ path: ['/api'] })
+  }).unless({ path: ['/api/register'] })
 )
 
 app.use(express.json())

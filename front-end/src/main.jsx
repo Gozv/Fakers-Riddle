@@ -4,15 +4,25 @@ import Chat from "./components/Chat"
 import App from "./App"
 import './index.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import Register from "./components/Register"
+import Login from "./components/Login"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Rooms />,
+    element: <App />,
   },
   {
-    path: "/",
-    element: <App />,
+    path: '/register',
+    element: <Register />
+  },
+  {
+    path:'/login',
+    element: <Login />
+  },
+  {
+    path: "/room",
+    element: <Rooms />,
   },
   {
     path: "/room/:roomName",
