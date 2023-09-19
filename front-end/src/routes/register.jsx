@@ -2,10 +2,7 @@ import { Form, redirect } from "react-router-dom";
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const userData = {};
-  formData.forEach((value, key) => {
-    userData[key] = value;
-  });
+  const userData = Object.fromEntries(formData);
   await fetch("http://localhost:3000/api/register", {
     method: "POST",
     headers: {
