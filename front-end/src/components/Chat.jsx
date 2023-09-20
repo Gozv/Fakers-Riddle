@@ -2,7 +2,7 @@ import { io } from 'socket.io-client'
 import { useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
 
-const socket = io('http://localhost:3000')
+const socket = io('localhost:3000')
 
 function Chat () {
   const [message, setMessage] = useState('')
@@ -22,7 +22,7 @@ function Chat () {
   
   const handleDisconnect = () => {
     socket.disconnect()
-    window.location = '/'
+    window.location = '/room'
   }
 
   useEffect(() => {

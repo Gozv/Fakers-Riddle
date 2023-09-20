@@ -1,31 +1,34 @@
 import { useState, useEffect } from 'react'
 import { io } from 'socket.io-client'
 
-const socket = io('http://localhost:3000')
+const socket = io('localhost:3000')
 
 function Rooms () {
     const [roomName, setRoomName] = useState('')
     const [availableRooms, setAvailableRooms] = useState([])
     const [isPublic, setIsPublic] = useState(true)
+    const [roomLimit, setRoomLimit] = useState(4)
 
     const handleRoomNameChange = (e) => {
       setRoomName(e.target.value)
     }
     
-
     const handleEnterPress = (e) => {
       if (e.key === 'Enter' && roomName.trim() !== '') {
           window.location = `room/${roomName}`
         }
     }
+
     const handlePublicRoomChange = () => {
         setIsPublic(() => !isPublic)
     }
 
-    const goToRoom = () => {
-      if (roomName.trim() != "") {
-        window.location = `room/${roomName}`
-      }
+    const handleLimitOfPlayers = (e) => {
+        const newLimit = parseInt(e.target.value, 10)
+
+        if (!isNaN(newLimit)) {
+            setRoomLimit(newLimit)
+        }
     }
 
     useEffect(() => {
@@ -37,6 +40,13 @@ function Rooms () {
       socket.off('availableRooms')
       }
       }, [])
+
+    const createRoom = () => {
+        if (roomName.trim() !== '') {
+        socket.emit('createRoom', roomName, roomLimit)
+        window.location = `room/${roomName}`
+    }
+    }
 
     return(
         <>
@@ -50,7 +60,13 @@ function Rooms () {
                   onChange={handlePublicRoomChange}
                />
            </label>
-            <button onClick={goToRoom}>Join room</button>
+           <br />
+           <label>
+            Limit of players.
+            <input type="number" onChange={handleLimitOfPlayers}/>
+           </label>
+           <br />
+            <button onClick={createRoom}>Join room</button>
         </div>
             <br />
             <div>
