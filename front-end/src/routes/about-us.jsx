@@ -1,8 +1,9 @@
+import Info from "../components/Info"
 
 
 function AboutUs() {
   return (
-    <div>AboutUs</div>
+    <Info />
   )
 }
 
