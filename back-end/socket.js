@@ -5,6 +5,7 @@ const socketServer = (io) => {
     io.emit('availableRooms', Array.from(rooms.keys()))
     socket.on('joinRoom', (roomName) => {
       socket.join(roomName)
+
       console.log(`Usuario ${socket.id} se unió a la sala: ${roomName}`)
 
       if (!rooms.has(roomName)) {
@@ -14,12 +15,15 @@ const socketServer = (io) => {
 
       io.emit('availableRooms', Array.from(rooms.keys()))
 
-      const updateUsersInRoom = (roomName) => {
+      const usersCount = (roomName) => {
         const usersInRoom = rooms.has(roomName) ? rooms.get(roomName).size : 0
         return usersInRoom
       }
 
-      updateUsersInRoom(roomName)
+      socket.emit('usersCount', usersCount(roomName))
+
+      usersCount(roomName)
+      console.log(usersCount(roomName))
 
       socket.on('message', (body) => {
         console.log(`Mensaje recibido: ${body} de ${socket.id}`)
@@ -33,11 +37,10 @@ const socketServer = (io) => {
         console.log(`Usuario ${socket.id} se desconectó de la sala ${roomName}`)
         if (rooms.has(roomName)) {
           rooms.get(roomName).delete(socket.id)
-          if (updateUsersInRoom() === 0) {
+          if (usersCount() === 0) {
             rooms.delete(roomName)
             io.emit('availableRooms', Array.from(rooms.keys()))
           }
-          updateUsersInRoom(roomName)
         }
       })
     })

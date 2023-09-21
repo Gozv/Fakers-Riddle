@@ -8,6 +8,7 @@ function Rooms () {
     const [availableRooms, setAvailableRooms] = useState([])
     const [isPublic, setIsPublic] = useState(true)
     const [roomLimit, setRoomLimit] = useState(4)
+    const [fullMessage, setFullMessage] = useState('')
 
     const handleRoomNameChange = (e) => {
       setRoomName(e.target.value)
@@ -41,11 +42,19 @@ function Rooms () {
       }
       }, [])
 
-    const createRoom = () => {
+      const createRoom = () => {
         if (roomName.trim() !== '') {
         socket.emit('createRoom', roomName, roomLimit)
         window.location = `room/${roomName}`
     }
+
+      socket.on('usersCount', (usersCount) => {
+        if (usersCount > roomLimit) {
+            setFullMessage('Sala llena')
+        }
+      })
+
+    
     }
 
     return(
@@ -67,6 +76,7 @@ function Rooms () {
            </label>
            <br />
             <button onClick={createRoom}>Join room</button>
+            <p>{fullMessage}</p>
         </div>
             <br />
             <div>
