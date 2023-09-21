@@ -13,15 +13,19 @@ export const userBodySchema = Joi.object({
     .max(30)
     .required(),
 
-  // userName: Joi.string()
-  //   .pattern()
-  //   .min()
-  //   .max()
-  //   .required(),
+  userName: Joi.string()
+    .pattern(/^(?=.*[a-z])(?=.*\d)(?=.*[_])[a-z\d_]+$/)
+    .min(5)
+    .max(10)
+    .required()
+    .messages({
+      'string.pattern.base':
+        'Username must contain at least one lowercase letter, one digit, and one underscore (_)',
+      'string.min': 'Password must have at least {#limit} characters',
+      'string.max': 'Password must not be longer than {#limit} characters'
+    }),
 
   email: Joi.string().email().required(),
-
-  address: Joi.string().required(),
 
   password: Joi.string()
     .pattern(
