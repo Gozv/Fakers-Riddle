@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import gameController from '../controllers/gameController.js'
+import { gameValidation, paramsValidation } from '../middlewares/validations.js'
 
 export const gameRoutes = () => {
   const gameRouter = Router()
@@ -13,11 +14,11 @@ export const gameRoutes = () => {
 
   gameRouter.route('/games')
     .get(getGames)
-    .post(createGame)
+    .post(gameValidation, createGame)
 
   gameRouter.route('/games/:id')
-    .get(getGameById)
-    .put(updateGame)
+    .get(paramsValidation, getGameById)
+    .put(paramsValidation, updateGame)
 
   return gameRouter
 }
