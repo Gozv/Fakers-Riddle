@@ -1,5 +1,5 @@
 // Definición de personajes
-const personajes = ["Superviviente 1", "Superviviente 2", "Superviviente 3", "Superviviente 4", "Superviviente 5", "Superviviente 6", "Superviviente 7", "Doble Agente", "Médico"];
+const personajes = ["Superviviente 1", "Superviviente 2", "Superviviente 3", "Superviviente 4", "Superviviente 5", "Superviviente 6", "Superviviente 7", "Doble Agente", "Médico", "Lobo"];
 
 // Variable para llevar un registro de los personajes vivos
 const personajesVivos = [...personajes];
@@ -82,22 +82,41 @@ function realizarNoche() {
     victima = obtenerPersonajeAlAzar();
   } while (victima === "Lobo");
   
-  console.log(`${lobo.nombre} (el Lobo) elige a ${victima}.`);
+  console.log(`${lobo.nombre} (el Lobo) elige a ${victima.nombre}.`);
 
-  // Verificar si el Lobo ha sido eliminado
-  const supervivientesVivos = jugadores.filter((jugador) => jugador.personaje !== victima);
-  if (!supervivientesVivos.some((jugador) => jugador.personaje === "Lobo")) {
-    console.log("¡Los supervivientes ganan!");
-  } else {
-    console.log(`Quedan ${supervivientesVivos.length} personajes vivos.`);
-    if (supervivientesVivos.length <= 1) {
-      console.log("El juego ha terminado.");
-      console.log("¡El Lobo gana!");
-    } else {
-      console.log(`Noche número ${numeroNoche + 1} la luna cae sobre la aldea.`);
-      numeroNoche++;
-      habilitarChat();
+  // Obtener al Médico
+  const medico = jugadores.find((jugador) => jugador.personaje === "Médico");
+
+  // Verificar si el Médico intenta salvar a alguien y si coincide con la víctima del Lobo
+  let medicoSalva;
+  if (medico) {
+    if (medico === victima || medico === lobo) {
+      medicoSalva = victima;
     }
+  }
+
+  // Si el Médico no salvó a la víctima del Lobo, se procede con la eliminación
+  if (!medicoSalva) {
+    // Verificar si el Lobo ha sido eliminado
+    const supervivientesVivos = jugadores.filter((jugador) => jugador.personaje !== victima);
+    if (!supervivientesVivos.some((jugador) => jugador.personaje === "Lobo")) {
+      console.log("¡Los supervivientes ganan!");
+    } else {
+      console.log(`Quedan ${supervivientesVivos.length} personajes vivos.`);
+      if (supervivientesVivos.length <= 1) {
+        console.log("El juego ha terminado.");
+        console.log("¡El Lobo gana!");
+      } else {
+        console.log(`Comienza la noche número ${numeroNoche + 1}.`);
+        numeroNoche++;
+        habilitarChat();
+      }
+    }
+  } else {
+    console.log(`El Médico ha salvado a ${medicoSalva.nombre} del ataque del Lobo.`);
+    console.log(`Comienza la noche número ${numeroNoche + 1}.`);
+    numeroNoche++;
+    habilitarChat();
   }
 }
 
@@ -125,11 +144,8 @@ function votacionDelDia() {
 
   // Los personajes emiten sus votos
   jugadores.forEach((jugador) => {
-    //cada personaje elige a quién votar
-    let voto;
-    do {
-      voto = obtenerPersonajeAlAzar();
-    } while (voto === jugador.personaje); // Evitar que un jugador se vote a sí mismo
+    // En este ejemplo, cada personaje elige a quién votar
+    const voto = obtenerPersonajeAlAzar();
     console.log(`${jugador.nombre} (${jugador.personaje}) vota por ${voto}.`);
 
     // Registra el voto (maneja votos nulos)
@@ -188,7 +204,7 @@ function votacionDelDia() {
 
 // Función para iniciar el juego durante el día
 function iniciarDia() {
-  console.log(`Día número ${numeroDia} el sol se asoma sobre la aldea.`);
+  console.log(`Día número ${numeroDia} el sol se asoma en la aldea.`);
   asignarPersonajesAJugadores(jugadores);
   habilitarChat();
 }
