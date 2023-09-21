@@ -11,12 +11,8 @@ function FindRooms() {
           type="search"
           name="query"
         />
-        <button
-          type="submit"
-          className="right-2 top-1/2 transfor bg-green-800 text-white px-4 py-2 rounded-lg hover:bg-green-950"
-        >
-          Search
-        </button>
+        <div id="search-spinner" aria-hidden hidden={true} />
+        <div className="sr-only" aria-live="polite"></div>
       </Form>
     </div>
   );
