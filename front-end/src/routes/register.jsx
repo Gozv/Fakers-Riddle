@@ -10,7 +10,6 @@ export async function action({ request }) {
     },
     body: JSON.stringify(userData),
   });
-
   const data = await response.json()
   console.log(data)
   return redirect("/login");
