@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import SendForm from "./SendForm";
+import {Alert, Box, Collapse, TextField} from "@mui/material"
 
 function Register() {
   const firstNameRef = useRef(null);
@@ -30,12 +31,32 @@ function Register() {
     )
   }
   
+const [open, setOpen] = useState(true);
+
   return (
     <main className="h-screen">
       <div className="px-8 py-8 font-serif text-base/10 border rounded-5xl shadow-md content-between">
         <form onSubmit={handleSubmit}>
           <h2 className="text-3xl font-semibold text-center mb-4">Register</h2>
-          <label className="block text-xl py-6">
+
+           {/* Alerta de warining */}
+          <Collapse in={open}><Alert severity="warning" onClose={() =>{setOpen(false);}}>sakdjashdkasdjh</Alert></Collapse>
+
+          <Box component="form" onSubmit={handleSubmit}>
+            <TextField 
+            id="email"
+            label="First Name"
+            type="text"
+            variant="outlined"
+            helperText="Ingrese su nombre"
+            error={false}
+            ref={firstNameRef}
+            name="firstName"
+            required
+            />
+          </Box>
+          
+          {/* <label className="block text-xl py-6">
             First Name:
             <input
               name="firstName"
@@ -44,7 +65,7 @@ function Register() {
               ref={firstNameRef}
               required
             />
-          </label>
+          </label> */}
           <label className="block text-xl py-6">
             Last Name:
             <input
