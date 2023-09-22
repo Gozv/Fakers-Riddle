@@ -22,7 +22,7 @@ const messageController = () => {
     }
   }
 
-  const getMessages = async (request, response, next) => {
+  const getMessages = async (_request, response, next) => {
     try {
       const messages = await prisma.messages.findMany({
         include: {

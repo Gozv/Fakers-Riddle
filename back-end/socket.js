@@ -23,7 +23,6 @@ const socketServer = (io) => {
       socket.emit('usersCount', usersCount(roomName))
 
       usersCount(roomName)
-      console.log(usersCount(roomName))
 
       socket.on('message', (body) => {
         console.log(`Mensaje recibido: ${body} de ${socket.id}`)

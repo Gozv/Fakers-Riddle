@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import messageController from '../controllers/messageController.js'
+import { messageValidation, paramsValidation } from '../middlewares/validations.js'
 
 export const messageRoutes = () => {
   const {
@@ -11,11 +12,11 @@ export const messageRoutes = () => {
   const messageRouter = Router()
 
   messageRouter.route('/messages')
-    .post(createMessage)
+    .post(messageValidation, createMessage)
     .get(getMessages)
 
   messageRouter.route('/messages/:id')
-    .get(getMessageById)
+    .get(paramsValidation, getMessageById)
 
   return messageRouter
 }
