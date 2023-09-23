@@ -61,7 +61,7 @@ function Login() {
 
     if (emailValid && passwordValid) {
       console.log("Inicio de sesión exitoso");
-      // Aquí puedes realizar la autenticación o enviar los datos al servidor
+  
     }
   };
 
