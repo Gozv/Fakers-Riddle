@@ -29,12 +29,12 @@ const authController = () => {
       const token = jwt.sign({
         name: user.firstName,
         role: user.role
-      }, process.env.SECRET_KEY, { expiresIn: '1h' })
+      }, process.env.SECRET_KEY, { expiresIn: '10h' })
 
       const refreshToken = jwt.sign({
         name: user.firstName,
         role: user.role
-      }, process.env.SECRET_REFRESH_KEY, { expiresIn: '12h' })
+      }, process.env.SECRET_REFRESH_KEY, { expiresIn: '20h' })
 
       return response.status(httpStatus.OK).json({
         message: 'Login successful',
@@ -56,7 +56,7 @@ const authController = () => {
       const token = jwt.sign({
         name: decodedToken.name,
         role: decodedToken.role
-      }, process.env.SECRET_KEY, { expiresIn: '1h' })
+      }, process.env.SECRET_KEY, { expiresIn: '10h' })
 
       return response.status(httpStatus.OK).json({
         message: 'Token refreshed succesfully',
