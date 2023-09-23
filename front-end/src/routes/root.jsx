@@ -5,7 +5,7 @@ function Root() {
   return (
         <main className="bg-gray-100 min-h-screen flex flex-col">
           <div id="navbar" className="bg-green-950 text-white py-4">
-            <h1 className="text-2xl font-bold ml-4">Faker&apos;s Riddle</h1>
+            <h1 className="text-2xl font-bold ml-4"><NavLink to={'/'}>Faker&apos;s Riddle</NavLink></h1>
             <nav className="bg-green-950">
               <ul className="flex justify-center">
                 <li className="mr-12 hover:scale-125" >
