@@ -24,7 +24,7 @@ const roomController = () => {
       await prisma.$disconnect()
     }
   }
-  const getRooms = async (request, response, next) => {
+  const getRooms = async (_request, response, next) => {
     try {
       const rooms = await prisma.rooms.findMany({
         where: {
@@ -81,7 +81,7 @@ const roomController = () => {
   const updateRoom = async (request, response, next) => {
     try {
       const { id } = request.params
-      const { name, isPublic } = request.body
+      const { name, userID, isPublic } = request.body
 
       const updatedRoom = await prisma.rooms.update({
         where: {
@@ -89,6 +89,7 @@ const roomController = () => {
         },
         data: {
           name,
+          userID: Number(userID),
           isPublic: Boolean(isPublic)
         }
       })

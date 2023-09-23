@@ -22,7 +22,7 @@ const gameUserController = () => {
     }
   }
 
-  const getGameUsers = async (request, response, next) => {
+  const getGameUsers = async (_request, response, next) => {
     try {
       const gameUsers = await prisma.gameUser.findMany({
         include: {

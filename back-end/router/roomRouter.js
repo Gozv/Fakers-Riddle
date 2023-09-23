@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { roomBodyValidation, paramsValidation } from '../middlewares/validations.js'
 import roomController from '../controllers/roomController.js'
 
 export const roomRoutes = () => {
@@ -13,13 +14,13 @@ export const roomRoutes = () => {
   const roomRouter = Router()
 
   roomRouter.route('/rooms')
-    .post(createRoom)
+    .post(roomBodyValidation, createRoom)
     .get(getRooms)
 
   roomRouter.route('/rooms/:id')
-    .get(getRoomById)
-    .put(updateRoom)
-    .delete(deleteRoom)
+    .get(paramsValidation, getRoomById)
+    .put(paramsValidation, roomBodyValidation, updateRoom)
+    .delete(paramsValidation, deleteRoom)
 
   return roomRouter
 }

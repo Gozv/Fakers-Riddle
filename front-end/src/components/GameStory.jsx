@@ -1,7 +1,7 @@
 function GameStory() {
   return (
     <main>
-      <h1 className="p-6 font-serif font-bold text-center text-5xl">Faker&apos;s Riddle</h1>
+      <h2 className="p-6 font-serif font-bold text-center text-5xl">Faker&apos;s Riddle</h2>
       <p className="font-serif text-base/7 text-xl indent-8 px-10">
         In the enigmatic alleys of Riddlehaven, a city shrouded in mysteries and
         shadows, a perplexing enigma had begun to unfold. For weeks, its
