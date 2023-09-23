@@ -115,7 +115,7 @@ required
 error={error.error}
 variant="outlined"
 label="Email:"
-helperText="Put your email"
+helperText={error.emailError ? error.emailMessage : ""}
 value={email}
 onChange={(e) => setEmail(e.target.value)}
 />
@@ -128,7 +128,7 @@ type="password"
 placeholder="*********"
 required
 label="Password"
-helperText="Put your Password"
+helperText={error.passwordError ? error.passwordMessage : ""}
 error={error.passwordError}
 variant="outlined"
 value={password}
