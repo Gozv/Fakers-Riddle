@@ -4,7 +4,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register, { action as registerAction } from "./routes/register";
 import Login, { action as loginAction} from "./routes/login";
-import React from "react";
+// import React from "react";
 import Root from "./routes/root";
 import Index from "./routes";
 import GameRules from "./routes/game-rules";
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </>
 );
