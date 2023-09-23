@@ -49,7 +49,7 @@ function Register() {
       emailError: !emailValid,
       passwordError: !passwordValid,
       emailMessage: emailValid ? "" : "Email incorrecto",
-      passwordMessage: passwordValid ? "" : "Contraseña incorrecta",
+      passwordMessage: passwordValid ? "" : "Contraseña incorrecta deberia tener 8 caracteres, una mayuscula, una minuscula, un numero y un signo",
     });
 
     if (emailValid && passwordValid) {
