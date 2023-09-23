@@ -36,7 +36,7 @@ export const userBodySchema = Joi.object({
     .required()
     .messages({
       'string.pattern.base':
-        'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&)',
+        'Username must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&)',
       'string.min': 'Password must have at least {#limit} characters',
       'string.max': 'Password must not be longer than {#limit} characters'
     }),
