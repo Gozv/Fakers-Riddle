@@ -1,6 +1,5 @@
-import { ThemeProvider, createTheme, TextField, Grid, Button } from '@mui/material';
-import { redirect } from "react-router-dom"
-import { useState } from 'react';
+import { Form, redirect } from "react-router-dom"
+import {useState} from "react"
 
 export async function action ({ request }) {
   const formData = await request.formData();
@@ -25,17 +24,11 @@ export async function action ({ request }) {
   return redirect('/room')
 }
 
-const theme = createTheme();
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState({
-    emailError: false,
-    passwordError: false,
-    emailMessage: "",
-    passwordMessage: "",
-  });
+  const [isValid, setIsValid] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const validateEmail = (email) => {
     const regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
@@ -47,111 +40,73 @@ function Login() {
     return regex.test(password);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let emailValid = validateEmail(email);
-    let passwordValid = validatePassword(password);
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    if (!validateEmail(value)) {
+      setEmailError(true);
+      setIsValid(false);
+    } else {
+      setEmailError(false);
+      setIsValid(!passwordError);
+    }
+  };
 
-    setError({
-      emailError: !emailValid,
-      passwordError: !passwordValid,
-      emailMessage: emailValid ? "" : "Email incorrecto",
-      passwordMessage: passwordValid ? "" : "Contraseña incorrecta",
-    });
-
-    if (emailValid && passwordValid) {
-      console.log("Inicio de sesión exitoso");
-  
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    if (!validatePassword(value)) {
+      setPasswordError(true);
+      setIsValid(false);
+    } else {
+      setPasswordError(false);
+      setIsValid(!emailError);
     }
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <section>
-        <form
-          method="post"
-          className="px-20 py-8 font-serif text-base/10 border rounded-5xl shadow-md content-between"
-          onSubmit={handleSubmit}
+    <section>
+      <Form
+        method="post"
+        className="px-20 py-8 font-serif text-base/10 border rounded-5xl shadow-md content-between"
+      >
+        <h2 className="text-3xl font-semibold text-center mb-4">Login</h2>
+        <label className="block text-xl py-6">
+          Email:
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="JoeDoe@email.com"
+            required
+            onChange={handleEmailChange}
+          />
+          {emailError && (
+            <p className="text-red-500">Email incorrecto</p>
+          )}
+        </label>
+        <label className="block text-xl py-6">
+          Password:
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder=" ◽◽◽◽◽◽◽◽"
+            required
+            onChange={handlePasswordChange}
+          />
+          {passwordError && (
+            <p className="text-red-500">Contraseña incorrecta</p>
+          )}
+        </label>
+        <button
+          className="w-full item-center bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded  disabled:bg-slate-500"
+          type="submit"
+          disabled={!isValid}
         >
-          <h2 className="text-3xl font-semibold text-center mb-4">Login</h2>
-          <Grid item xs={8}>
-            <TextField
-              id="email"
-              name="email"
-              type="email"
-              placeholder="JoeDoe@email.com"
-              required
-              error={error.emailError}
-              variant="outlined"
-              label="Email"
-              helperText={error.emailError ? error.emailMessage : ""}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={8} mt={2}>
-            <TextField
-              id="password"
-              name="password"
-              type="password"
-              placeholder=" ◽◽◽◽◽◽◽◽"
-              required
-              error={error.passwordError}
-              variant="outlined"
-              label="Password"
-              helperText={error.passwordError ? error.passwordMessage : ""}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Grid>
-          <Button
-            className="w-full item-center bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
-            type="submit"
-          >
-            Login
-          </Button>
-        </form>
-      </section>
-    </ThemeProvider>
-  );
+          Login
+        </button>
+      </Form>
+    </section>
+  )
 }
-// function Login() {
-//   return (
-//     <section>
-//       <Form 
-//         method="post"
-//         className="px-20 py-8 font-serif text-base/10 border rounded-5xl shadow-md content-between"
-//       >
-//         <h2 className="text-3xl font-semibold text-center mb-4">Login</h2>
-//         <label className="block text-xl py-6">
-//             Email:
-//             <input
-//               id="email"
-//               name="email"
-//               type="email"
-//               placeholder="JoeDoe@email.com"
-//               required
-//             />
-//           </label>
-//           <label className="block text-xl py-6">
-//             Password:
-//             <input
-//               id="password"
-//               name="password"
-//               type="password"
-//               placeholder=" ◽◽◽◽◽◽◽◽"
-//               required
-//             />
-//           </label>
-//         <button
-//             className="w-full item-center bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
-//             type="submit"
-//         >
-//         Login
-//         </button>
-//       </Form>
-//     </section>
-//   )
-// }
 
-export default Login
+export default Login;

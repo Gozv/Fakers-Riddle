@@ -1,5 +1,4 @@
-import {redirect } from "react-router-dom";
-import {Box, TextField, Button, Grid} from "@mui/material"
+import { Form, redirect } from "react-router-dom";
 import { useState } from "react";
 
 export async function action({ request }) {
@@ -18,17 +17,10 @@ export async function action({ request }) {
 }
 
 function Register() {
+  const [isValid, setIsValid] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState({
-    error: false,
-    message: "",
-   emailError: false,
-    passwordError: false,
-    emailMessage: "",
-    passwordMessage: "",
-  });
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const validateEmail = (email) => {
     const regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
@@ -40,123 +32,37 @@ function Register() {
     return regex.test(password);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let emailValid = validateEmail(email);
-    let passwordValid = validatePassword(password);
-
-    setError({
-      emailError: !emailValid,
-      passwordError: !passwordValid,
-      emailMessage: emailValid ? "" : "Email incorrecto",
-      passwordMessage: passwordValid ? "" : "Contraseña incorrecta deberia tener 8 caracteres, una mayuscula, una minuscula, un numero y un signo",
-    });
-
-    if (emailValid && passwordValid) {
-      console.log("Registro exitoso");
-      // Aquí puedes realizar el registro o enviar los datos al servidor
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    if (!validateEmail(value)) {
+      setEmailError(true);
+      setIsValid(false);
+    } else {
+      setEmailError(false);
+      setIsValid(!passwordError);
     }
   };
 
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    if (!validatePassword(value)) {
+      setPasswordError(true);
+      setIsValid(false);
+    } else {
+      setPasswordError(false);
+      setIsValid(!emailError);
+    }
+  };
+
+
   return (
     <>
-   
-
       <div className="px-8 py-8 font-serif text-base/10 border rounded-5xl shadow-md content-between">
-        {/* <Form method="post"> */}
+        <Form method="post">
           <h2 className="text-3xl font-semibold text-center mb-4">Register</h2>
-          <Box component="form" method="post" onSubmit={handleSubmit}>
-            <Grid item xs={8}>
-<TextField
-id="firstName"
-label="First name"
-type="text"
-placeholder="Joe"
-variant="outlined"
-helperText="Put your Name"
-error={error.error}
-required
-/>
-</Grid>
-<Grid item xs={8} mt={2}>
-<TextField
-label="Last Name"
-id="lastName"
-name="lastName"
-type="text"
-placeholder="Doe"
-required
-variant="outlined"
-helperText="Put your Last Name"
-error={error.error}
-
-/>
-</Grid>
-<Grid item xs={8} mt={2}>
-<TextField
-id="userName"
-name="userName"
-type="text"
-placeholder="JoeD_01"
-required
-label="User Name"
-error={error.error}
-helperText="Put your User Name"
-variant="outlined"
-/>
-</Grid>
-<Grid item xs={8} mt={2}>
-<TextField
-id="email"
-name="email"
-type="email"
-placeholder="JoeDoe@email.com"
-required
-error={error.error}
-variant="outlined"
-label="Email:"
-helperText={error.emailError ? error.emailMessage : ""}
-value={email}
-onChange={(e) => setEmail(e.target.value)}
-/>
-</Grid>
-<Grid item xs={8} mt={2}>
-<TextField
-id="password"
-name="password"
-type="password"
-placeholder="*********"
-required
-label="Password"
-helperText={error.passwordError ? error.passwordMessage : ""}
-error={error.passwordError}
-variant="outlined"
-value={password}
-onChange={(e) => setPassword(e.target.value)}
-/>
-</Grid>
-<Grid item xs={8} mt={2}>
-<TextField
-id="birthday"
-name="birthday"
-type="date"
-variant="outlined"
-error={error.error}
-helperText="Put yout birthday"
-/>
-</Grid>
-
-<Button 
-            type="submit"
-            className="w-full item-center bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
-          >
-            Accept
-          </Button>
-</Box>
-
-          {/* <label className="block text-xl py-6">
+          <label className="block text-xl py-6">
             First Name:
-            <input id="firstName" name="firstName" type="text" placeholder=" Joe" required />
+            <input id="firstName" name="firstName" type="text" placeholder=" Joe" />
           </label>
           <label className="block text-xl py-6">
             Last Name:
@@ -168,9 +74,10 @@ helperText="Put yout birthday"
               id="userName"
               name="userName"
               type="text"
-              placeholder=" JoeD_01"
+              placeholder=" joe_001"
               required
             />
+            <p className="text-gray-500 text-sm">El username debe ser en minúsculas.</p>
           </label>
           <label className="block text-xl py-6">
             Email:
@@ -180,7 +87,11 @@ helperText="Put yout birthday"
               type="email"
               placeholder="JoeDoe@email.com"
               required
+              onChange={handleEmailChange}
             />
+            {emailError && (
+              <p className="text-red-500">Email incorrecto</p>
+            )}
           </label>
           <label className="block text-xl py-6">
             Password:
@@ -190,19 +101,24 @@ helperText="Put yout birthday"
               type="password"
               placeholder=" ◽◽◽◽◽◽◽◽"
               required
+              onChange={handlePasswordChange}
             />
+            {passwordError && (
+              <p className="text-red-500">Contraseña incorrecta. Debe tener 8 caracteres, una mayuscula, una minuscula, un numero y un signo (!)</p>
+            )}
           </label>
           <label className="block text-xl py-6">
             Birthday:
-            <input id="birthday" name="birthday" type="date" required />
-          </label> */}
-          {/* <Button 
+            <input id="birthday" name="birthday" type="date" />
+          </label>
+          <button 
             type="submit"
-            className="w-full item-center bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
+            className="w-full item-center bg-green-700 hover.bg-green-900 text-white font-bold py-2 px-4 rounded disabled:bg-slate-500"
+            disabled={!isValid}
           >
             Accept
-          </Button> */}
-        {/* </Form> */}
+          </button>
+        </Form>
       </div>
     </>
   );
