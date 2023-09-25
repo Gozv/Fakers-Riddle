@@ -6,10 +6,10 @@ import jwt from 'jsonwebtoken'
 const authController = () => {
   const login = async (request, response, next) => {
     try {
-      const { email, password } = request.body
+      const { userName, password } = request.body
       const user = await prisma.users.findUnique({
         where: {
-          email
+          userName
         }
       })
       if (!user) {
@@ -38,6 +38,7 @@ const authController = () => {
 
       return response.status(httpStatus.OK).json({
         message: 'Login successful',
+        userName,
         token,
         refreshToken
       })
