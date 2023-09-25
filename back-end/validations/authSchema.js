@@ -1,7 +1,17 @@
 import Joi from 'joi'
 
 export const authBodySchema = Joi.object({
-  email: Joi.string().email().required(),
+  userName: Joi.string()
+    .pattern(/^(?=.*[a-z])(?=.*\d)(?=.*[_])[a-z\d_]+$/)
+    .min(5)
+    .max(10)
+    .required()
+    .messages({
+      'string.pattern.base':
+      'Username must contain lowercase letters, a digit and an underscore (_)',
+      'string.min': 'Password must have at least {#limit} characters',
+      'string.max': 'Password must not be longer than {#limit} characters'
+    }),
 
   password: Joi.string()
     .pattern(
