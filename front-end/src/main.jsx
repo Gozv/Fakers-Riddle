@@ -1,17 +1,15 @@
 import ReactDOM from "react-dom/client";
-import Chat from "./components/Chat";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register, { action as registerAction } from "./routes/register";
 import Login, { action as loginAction} from "./routes/login";
-// import React from "react";
 import Root from "./routes/root";
 import Index from "./routes";
 import GameRules from "./routes/game-rules";
-import RoomsRoot, { action as createAction }from "./routes/rooms-root";
 import AboutUs from "./routes/about-us";
 import ErrorPage from "./error-page";
 import CreateRoom from "./routes/create-room";
+import Game from "./components/Game";
 
 const router = createBrowserRouter([
   {
@@ -42,20 +40,13 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/room",
-    element: <RoomsRoot />,
+    path: "/create-room",
+    element: <CreateRoom />,
     errorElement: <ErrorPage />,
-    action: createAction,
-    children: [
-      {
-        path: "/room/create",
-        element: <CreateRoom />
-      }
-    ]
   },
   {
-    path: "/room/:roomName",
-    element: <Chat />,
+    path: "/create-room/:roomName",
+    element: <Game/>,
   },
 ]);
 
