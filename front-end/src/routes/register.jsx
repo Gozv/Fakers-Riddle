@@ -11,8 +11,8 @@ export async function action({ request }) {
     },
     body: JSON.stringify(userData),
   });
-  const data = await response.json()
-  console.log(data)
+  await response.json()
+
   return redirect("/login");
 }
 

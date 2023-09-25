@@ -1,8 +1,5 @@
 import { Form, redirect } from "react-router-dom";
 import { useState } from "react";
-import io from "socket.io-client"
-
-const socket = io("localhost:3000"); 
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -16,13 +13,6 @@ export async function action({ request }) {
     body: JSON.stringify(loginData),
   });
   const data = await response.json();
-
-  if(data.userName){
-    socket.emit('conectUser', {user: data.userName});
-    let user
-    socket.on('userData', user)
-  }
-  
 
   if (data.token) {
     window.localStorage.setItem("token", data.token);
