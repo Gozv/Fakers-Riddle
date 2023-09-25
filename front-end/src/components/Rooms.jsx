@@ -16,12 +16,12 @@ function Rooms() {
 
   const handleEnterPress = (e) => {
     if (e.key === 'Enter' && roomName.trim() !== '') {
-      window.location = `${roomName}`
+      window.location = `room/${roomName}`
     }
   }
 
   const handlePublicRoomChange = () => {
-    setIsPublic(!isPublic)
+    setIsPublic(() => !isPublic)
   }
 
   const handleLimitOfPlayers = (e) => {
@@ -54,51 +54,54 @@ function Rooms() {
   const createRoom = () => {
     if (roomName.trim() !== '') {
       socket.emit('createRoom', { roomName, roomLimit })
-      window.location = `${roomName}`
+      window.location = `room/${roomName}`
     }
   }
 
   return (
     <>
-      <div>
-        <input
-          type="text"
-          placeholder='Write a name for the room'
-          value={roomName}
-          onChange={handleRoomNameChange}
-          onKeyPress={handleEnterPress}
-          className='border-2 border-zinc-500 p-2 w-full text-black'
-        />
-        <label>
-          Do you want the room to be public?
+        <div style={{
+          // display:"flex",
+          // flexDirection:"column"
+        }}>
           <input
-            type='checkbox'
-            checked={isPublic}
-            onChange={handlePublicRoomChange}
+            type="text"
+            placeholder='Write a name for the room'
+            value={roomName}
+            onChange={handleRoomNameChange}
+            onKeyPress={handleEnterPress}
+            className='border-2 border-zinc-500 p-2 w-full text-black'
           />
-        </label>
+          <label>
+            Do you want the room to be public?
+            <input
+              type='checkbox'
+              checked={isPublic}
+              onChange={handlePublicRoomChange}
+            />
+          </label>
+          <br />
+          <label>
+            Limit of players.
+            <input
+              type='number'
+              onChange={handleLimitOfPlayers}
+            />
+          </label>
+          <br />
+          <button onClick={createRoom}>Create Room</button>
+          <p>{fullMessage}</p>
+        </div>
         <br />
-        <label>
-          Limit of players.
-          <input
-            type='number'
-            onChange={handleLimitOfPlayers}
-          />
-        </label>
-        <br />
-        <button onClick={createRoom}>Create Room</button>
-        <p>{fullMessage}</p>
-      </div>
-      <br />
-      <div>
-            <p>Salas Disponibles:</p>
-            <ul>
-            {availableRooms.map((room) => (
-                <li key={room}>
-                <a href={`${room}`}>{room}</a>
-                </li>
-            ))}
-            </ul>
+        <div>
+              <p>Salas Disponibles:</p>
+              <ul>
+              {availableRooms.map((room) => (
+                  <li key={room}>
+                  <a href={`room/${room}`}>{room}</a>
+                  </li>
+              ))}
+              </ul>
         </div>
     </>
   )

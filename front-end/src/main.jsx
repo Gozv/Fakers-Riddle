@@ -7,10 +7,10 @@ import Login, { action as loginAction} from "./routes/login"
 import Root from "./routes/root"
 import Index from "./routes"
 import GameRules from "./routes/game-rules"
-import RoomsRoot, { action as createAction }from "./routes/rooms-root"
 import AboutUs from "./routes/about-us"
 import ErrorPage from "./error-page"
 import CreateRoom from "./routes/create-room"
+// import { UserProvider } from './UserContext';
 
 const router = createBrowserRouter([
   {
@@ -36,30 +36,24 @@ const router = createBrowserRouter([
       {
         path: "/about-us",
         element: <AboutUs />
-      }
+      },
+      {
+          path: "/room",
+          element: <CreateRoom />
+      },
+      {
+        path: "/room/:roomName",
+        element: <Chat/>,
+      },
 
     ],
-  },
-  {
-    path: "/room",
-    element: <RoomsRoot />,
-    errorElement: <ErrorPage />,
-    action: createAction,
-    children: [
-      {
-        path: "/room/create",
-        element: <CreateRoom />
-      }
-    ]
-  },
-  {
-    path: "/room/:roomName",
-    element: <Chat />,
-  },
-])
+  }
+  ])
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>
-    <RouterProvider router={router} />
+    {/* <UserProvider> */}
+      <RouterProvider router={router} />
+    {/* </UserProvider> */}
   </>
 )

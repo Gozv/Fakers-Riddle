@@ -39,7 +39,8 @@ const authController = () => {
       return response.status(httpStatus.OK).json({
         message: 'Login successful',
         token,
-        refreshToken
+        refreshToken,
+        email
       })
     } catch (error) {
       next(error)

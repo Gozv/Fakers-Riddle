@@ -2,18 +2,23 @@ import { io } from 'socket.io-client'
 import { useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
 
+// console.log(getEmail())
+
 const socket = io('localhost:3000')
 
 function Chat () {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
   const { roomName } = useParams();
+
+  // const userName = localStorage.getItem('userName');
+
   
   const handleSubmit = (e) => {
     e.preventDefault()
     const newMessage = {
       body: message,
-      from: 'Me'
+      from: "Me"
     }
     setMessages([...messages, newMessage])
     socket.emit('message', message)

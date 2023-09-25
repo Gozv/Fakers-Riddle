@@ -1,5 +1,7 @@
 import { Form, redirect } from "react-router-dom"
+import io from "socket.io-client"
 
+const socket = io("localhost:3000"); 
 export async function action ({ request }) {
   const formData = await request.formData();
   const loginData = Object.fromEntries(formData);
@@ -10,17 +12,27 @@ export async function action ({ request }) {
     },
     body: JSON.stringify(loginData),
   });
-  const data = await response.json()
-  
+
+  const data = await response.json();
+  socket.emit('setUserEmail', data.email);
+  console.log(data.email)
+
   if (data.token) {
     window.localStorage.setItem('token', data.token);
+    
+    console.log(data)
+    
+    
+    window.localStorage.setItem('userName', data.email);
   }
 
-  if(data.refreshToken) {
+  if (data.refreshToken) {
     window.localStorage.setItem('refreshToken', data.refreshToken);
   }
-  
-  return redirect('/room')
+
+  if (response.ok) {
+    return redirect('/room');
+  }
 }
 
 

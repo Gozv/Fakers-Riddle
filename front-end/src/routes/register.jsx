@@ -11,8 +11,11 @@ export async function action({ request }) {
     body: JSON.stringify(userData),
   })
   const data = await response.json()
+
   console.log(data)
-  return redirect('/login')
+  if (response.ok){
+    return redirect('/login')
+  }
 }
 
 function Register() {
@@ -54,7 +57,7 @@ function Register() {
             <input
               id="password"
               name="password"
-              type="password"
+              type="text"
               placeholder=" ◽◽◽◽◽◽◽◽"
               required
             />
