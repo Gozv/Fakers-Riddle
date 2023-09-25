@@ -14,6 +14,10 @@ export async function action({ request }) {
   });
   const data = await response.json();
 
+  if(data.userName) {
+    window.localStorage.setItem('userName')
+  }
+
   if (data.token) {
     window.localStorage.setItem("token", data.token);
   }
