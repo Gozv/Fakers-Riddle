@@ -1,11 +1,13 @@
 import { create } from 'zustand'
+// import { io } from "socket.io-client";
+// const socket = io("http://localhost:3000")
 
-const PLAYERS = []
+const PLAYERS = [];
 
 const useSavePlayers = create((set) => ({
   userInGame: false,
   setUserInGame: () => {
-    //logica para conectar con los usuarios de salas y guardarlos
+   
     set({ userInGame: true, PLAYERS })
   },
   eliminatePlayer: (playerUser) => { 

@@ -1,7 +1,14 @@
 import { create } from 'zustand';
-import { PLAYERS, SPECIAL_CHARACTERS, CHARACTER } from '../utils/gameConfig';
+import { SPECIAL_CHARACTERS, CHARACTER } from '../utils/gameConfig';
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3000")
 
-// el array PLAYERS se traerá del useSavePlayers
+const PLAYERS = []
+socket.on('arrayUsers', (arrayUsers) => {
+  PLAYERS.length = 0
+  PLAYERS.push(...arrayUsers)
+  console.log(PLAYERS)
+})
 
 const useAssignCharacter = create((set) => ({
   isCharacterAssigned: false, 
@@ -19,22 +26,27 @@ const useAssignCharacter = create((set) => ({
     }
 
     assignedCharacters.forEach((player) => {
-      if (!player.character && SPECIAL_CHARACTERS.length > 0) {
+      if (!player.role && SPECIAL_CHARACTERS.length > 0) {
         const index = Math.floor(Math.random() * SPECIAL_CHARACTERS.length);
         const selectedCharacter = SPECIAL_CHARACTERS[index];
-        player.character = selectedCharacter.name;
+        player.role = selectedCharacter.name;
         SPECIAL_CHARACTERS.splice(index, 1);
       } else {
-         player.character = CHARACTER.CITIZEN;
+        player.role = CHARACTER.CITIZEN;
       }
-    });
+    })
+    console.log(assignedCharacters)
 
     set({ isCharacterAssigned: true });
+
+    return () => {
+      socket.off('arrayUsers')
+     };
   },
   revertCharacterAssignment: () => {
     const players = PLAYERS.map((player) => ({
       ...player,
-      character: null,
+      role: null,
     }));
 
     set({ isCharacterAssigned: false, players });

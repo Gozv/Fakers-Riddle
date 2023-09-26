@@ -2,10 +2,12 @@ import { io } from "socket.io-client";
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 
-const userName = sessionStorage.getItem("userName");
+import Game from "../components/Game"
+
+const userName = sessionStorage.getItem("userName")
 
 const socket = io("http://localhost:3000", {
-  query: { userName: userName }
+  query: { userName: userName, role: '' }
 });
 
 function Chat() {
@@ -13,17 +15,20 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const { roomName } = useParams();
   const messagesEndRef = useRef(null)
+  const [roomUsers, setRoomUsers] = useState([])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const newMessage = {
       body: message,
-      from: "Me",
-    };
+      from: "Me"
+    }
+
+    console.log(newMessage)
     setMessages([...messages, newMessage]);
     socket.emit("message", message);
     setMessage("");
@@ -42,7 +47,16 @@ function Chat() {
   useEffect(() => {
     console.log(`Unido a la sala: ${roomName}`);
     socket.emit("joinRoom", roomName);
+    // socket.emit("getUsersInRoom", roomName);
   }, [roomName]);
+
+  useEffect(() => {
+    socket.on('usersCount', (count) => {
+      setRoomUsers(Array.from({ length: count }, (_, index) => index + 1))
+      console.log(roomUsers)
+    })
+  })
+
 
   useEffect(() => {
     socket.on("message", (newMessage) => {
@@ -51,13 +65,21 @@ function Chat() {
 
     return () => {
       socket.off("message");
+      socket.off('usersCount')
+      socket.off('arrayUsers')
     };
   }, []);
   
   return (
+    <>
+    <div className="relative"> 
+      <div className="absolute flex justify-center items-center visible">
+        <Game />
+      </div>
+
     <div className="h-screen bg-blue-100 flex flex-col">
       <div className="bg-gray-800 text-white p-4 flex justify-between items-center">
-        <h1 className="text-2xl font-semibold">Chat {roomName}</h1>
+        <h1 className="text-2xl font-semibold">Faker&apos;s Riddle || Sala: {roomName}</h1>
         <button
           className="px-2 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
           onClick={handleDisconnect}
@@ -101,6 +123,8 @@ function Chat() {
         </div>
       </form>
     </div>
+    </div>
+    </>
   );
 }
 

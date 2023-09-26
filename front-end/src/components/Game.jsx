@@ -3,7 +3,6 @@ import { useState } from "react";
 import { PHASES, GAME_STATUS } from "../utils/gameConfig";
 import useAssignCharacter from "../store/useAssignCharacter";
 import useSelectPlayers from "../store/useSelectPlayers";
-import Chat from '../components/Chat'
 import FakersChoice from "./FakersChoice";
 
 function Game() {
@@ -13,8 +12,6 @@ function Game() {
   const { assignCharacters } = useAssignCharacter()
   const [currentPhase, setCurrentPhase] = useState(null)
   const [gameStatus, setGameStatus] = useState(GAME_STATUS.STOP)
-
-
 
   const handleChangePhase = () => {
     if (currentPhase.order + 1 <= PHASES.length) {
@@ -34,10 +31,10 @@ function Game() {
     <>
       {
         gameStatus === GAME_STATUS.PLAYING ? (
-          <Timer phase={currentPhase.title} initialTime={currentPhase.initialTime} handlePhase={handleChangePhase} />
+          <Timer phase={currentPhase.title} initialTime={currentPhase.initialTime} handlePhase={handleChangePhase} players={players}/>
         ) : (
-          <div className="flex h-screen items-center bg-green-950 justify-center">
-            <button onClick={handleGameStart} className="bg-green-900 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
+          <div>
+            <button onClick={handleGameStart} className="bg-curious-blue-600 hover:bg-curious-blue-400 text-curious-blue-900 font-bold py-2 px-4 rounded">
               Iniciar Juego
             </button>
           </div>
@@ -48,8 +45,8 @@ function Game() {
           {isCharacterAssigned ? (
             <ul>
               {players.map((player) => (
-                <li key={player.user}>
-                  {player.user} - {player.character}
+                <li key={player.userName}>
+                  {player.userName} - {player.character}
                 </li>
               ))}
             </ul>
@@ -65,8 +62,8 @@ function Game() {
         </>
 
       ) : null}
-      {currentPhase?.phase === 'DAWN' ? (<p> La victima del faker es: {selectedPlayer?.user} </p>) : null}
-      {currentPhase?.phase === 'DAY' ? <Chat /> : null}
+      {currentPhase?.phase === 'DAWN' ? (<p> La victima del faker es: {selectedPlayer?.userName} </p>) : null}
+      {currentPhase?.phase === 'DAY' ? {/* acá se activa el chat */} : null}
       {currentPhase?.phase === 'VOTE' ? <p> Faltan boletas </p> : null}
       {currentPhase?.phase === 'DUSK' ? <p> Verificar estado del juego </p> : null}
     </>

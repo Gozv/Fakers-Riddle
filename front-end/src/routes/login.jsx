@@ -73,46 +73,40 @@ function Login() {
   };
 
   return (
-    <section>
+    <section className="md:h-screen">
       <Form
         method="post"
         className="px-20 py-8 font-serif text-base/10 border rounded-5xl shadow-md content-between"
       >
         <h2 className="text-3xl font-semibold text-center mb-4">Login</h2>
-        <label className="block text-xl py-6">
-          User Name:
-          <input
-            id="userName"
-            name="userName"
-            type="text"
-            placeholder=" joe_001"
-            required
-            onChange={handleUserNameChange}
-          />
-          {userNameError && (
-            <p className="text-red-500">
-              Username must contain lowercase letters, a digit and an underscore
-            </p>
-          )}
-        </label>
-        <label className="block text-xl py-6">
-          Password:
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="▪▪▪▪▪▪▪▪"
-            required
-            onChange={handlePasswordChange}
-          />
-          {passwordError && (
-            <p className="text-red-500">
-              The password must contain 8 characters with at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&)
-            </p>
-          )}
-        </label>
+        <div className="form-control w-full max-w-lg">
+            <label className="label">
+              <span className="label-text">User Name</span>
+            </label>
+            <input id="userName" name="userName" type="text" placeholder="user_01" className="input input-bordered w-full max-w-lg" onChange={handleUserNameChange} required />
+            <label className="label">
+              <span className="label-text-alt">
+                {userNameError && (
+                  <p className="text-red-500">Username must contain lowercase letters, a digit and an underscore</p>
+                )}
+              </span>
+            </label>
+          </div>
+          <div className="form-control w-full max-w-lg">
+            <label className="label">
+              <span className="label-text">Password</span>
+            </label>
+            <input id="password" name="password" type="text" placeholder="▪▪▪▪▪▪▪▪" className="input input-bordered w-full max-w-s" onChange={handlePasswordChange} required />
+            <label className="label">
+              <span className="label-text-alt">
+                {passwordError && (
+                  <p className="text-red-500">The password must contain 8 characters with at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&)</p>
+                )}
+              </span>
+            </label>
+          </div>
         <button
-          className="w-full item-center bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded  disabled:bg-slate-500"
+          className="w-full item-center bg-curious-blue-700 hover:bg-curious-blue-600 text-white font-bold py-2 px-4 rounded  disabled:bg-slate-500"
           type="submit"
           disabled={!isValid}
         >

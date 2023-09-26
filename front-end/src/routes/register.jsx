@@ -40,7 +40,7 @@ function Register() {
 
   const handleUserNameChange = (e) => {
     const value = e.target.value;
-    if(!validateUserName(value)) {
+    if (!validateUserName(value)) {
       setUserNameError(true)
       setIsValid(false)
     } else {
@@ -72,74 +72,85 @@ function Register() {
   };
 
   return (
-    <>
-      <div className="px-8 py-8 font-serif text-base/10 border rounded-5xl shadow-md content-between">
-        <Form method="post">
+    <main>
+      <div className="px-24 font-serif border rounded-xl content-between">
+        <Form method="post" className="grid-flow-col">
           <h2 className="text-3xl font-semibold text-center mb-4">Register</h2>
-          <label className="block text-xl py-6">
-            First Name:
-            <input id="firstName" name="firstName" type="text" placeholder=" Joe" />
-          </label>
-          <label className="block text-xl py-6">
-            Last Name:
-            <input id="lastName" name="lastName" type="text" placeholder=" Doe" required />
-          </label>
-          <label className="block text-xl py-6">
-            User Name:
-            <input
-              id="userName"
-              name="userName"
-              type="text"
-              placeholder=" joe_001"
-              required
-              onChange={handleUserNameChange}
-            />
-            {userNameError && (
-              <p className="text-red-500">Username must contain lowercase letters, a digit and an underscore</p>
-            )}
-          </label>
-          <label className="block text-xl py-6">
-            Email:
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="JoeDoe@email.com"
-              required
-              onChange={handleEmailChange}
-            />
-            {emailError && (
-              <p className="text-red-500">Please enter a valid email address</p>
-            )}
-          </label>
-          <label className="block text-xl py-6">
-            Password:
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="▪▪▪▪▪▪▪▪"
-              required
-              onChange={handlePasswordChange}
-            />
-            {passwordError && (
-              <p className="text-red-500">The password must contain 8 characters with at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&)</p>
-            )}
-          </label>
-          <label className="block text-xl py-6">
-            Birthday:
-            <input id="birthday" name="birthday" type="date" />
-          </label>
-          <button 
+          <div className="form-control w-full max-w-lg">
+            <label className="label">
+              <span className="label-text">First Name</span>
+            </label>
+            <input type="text" id="firstName" name="firstName" placeholder="Type here" className="input input-bordered w-full max-w-lg" required />
+          </div>
+          <div className="form-control w-full max-w-lg">
+            <label className="label">
+              <span className="label-text">Last Name</span>
+            </label>
+            <input id="lastName" name="lastName" type="text" placeholder="Type here" className="input input-bordered w-full max-w-lg" required />
+          </div>
+          <div className="form-control w-full max-w-lg">
+            <label className="label">
+              <span className="label-text">User Name</span>
+            </label>
+            <input id="userName" name="userName" type="text" placeholder="user_01" className="input input-bordered w-full max-w-lg" onChange={handleUserNameChange} required />
+            <label className="label">
+              <span className="label-text-alt">
+                {userNameError && (
+                  <p className="text-red-500">Username must contain lowercase letters, a digit and an underscore</p>
+                )}
+              </span>
+            </label>
+          </div>
+          <div className="form-control w-full max-w-lg">
+            <label className="label">
+              <span className="label-text">Email</span>
+            </label>
+            <input id="email" name="email" type="email" placeholder="user@email.com" className="input input-bordered w-full max-w-s" onChange={handleEmailChange} required />
+            <label className="label">
+              <span className="label-text-alt">
+                {emailError && (
+                  <p className="text-red-500">Please enter a valid email address</p>
+                )}
+              </span>
+            </label>
+          </div>
+          <div className="form-control w-full max-w-lg">
+            <label className="label">
+              <span className="label-text">Password</span>
+            </label>
+            <input id="password" name="password" type="text" placeholder="▪▪▪▪▪▪▪▪" className="input input-bordered w-full max-w-s" onChange={handlePasswordChange} required />
+            <label className="label">
+              <span className="label-text-alt">
+                {passwordError && (
+                  <p className="text-red-500">The password must contain 8 characters with at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&)</p>
+                )}
+              </span>
+            </label>
+          </div>
+          <div className="form-control w-full max-w-lg">
+            <label className="label">
+              <span className="label-text">Birthday</span>
+            </label>
+            <input id="birthday" name="birthday" type="date" className="input input-bordered w-full max-w-s" required />
+            <label className="label">
+              <span className="label-text-alt">
+                {passwordError && (
+                  <p className="text-red-500">The password must contain 8 characters with at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&)</p>
+                )}
+              </span>
+            </label>
+          </div>
+
+          <button
             type="submit"
-            className="w-full item-center bg-green-700 hover.bg-green-900 text-white font-bold py-2 px-4 rounded disabled:bg-slate-500"
+            className="w-full item-center bg-slate-900 hover.bg-slate-950 text-white font-bold py-2 px-4 rounded disabled:bg-slate-500"
             disabled={!isValid}
           >
             Accept
           </button>
         </Form>
       </div>
-    </>
+    </main>
   );
 }
 
