@@ -9,7 +9,8 @@ import GameRules from "./routes/game-rules";
 import AboutUs from "./routes/about-us";
 import ErrorPage from "./error-page";
 import CreateRoom from "./routes/create-room";
-import Game from "./components/Game";
+// import Game from "./components/Game";
+import Chat from "./components/Chat"
 
 const router = createBrowserRouter([
   {
@@ -40,13 +41,13 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/create-room",
+    path: "/room",
     element: <CreateRoom />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "/create-room/:roomName",
-    element: <Game/>,
+    path: "/room/:roomName",
+    element: <Chat/>,
   },
 ]);
 

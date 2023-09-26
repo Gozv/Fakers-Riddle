@@ -15,10 +15,10 @@ export async function action({ request }) {
   const data = await response.json();
 
   if(data.userName) {
-    window.localStorage.setItem('userName')
+    window.sessionStorage.setItem('userName', data.userName)
   }
 
-  if (data.token) {
+  if (data.token) { 
     window.localStorage.setItem("token", data.token);
   }
 
@@ -30,7 +30,7 @@ export async function action({ request }) {
     alert("Please try again or go to registration firth");
     return redirect("/login");
   } else {
-    return redirect("/create-room");
+    return redirect("/room");
   }
 }
 

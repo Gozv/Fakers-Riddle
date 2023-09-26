@@ -1,74 +1,107 @@
-import { io } from 'socket.io-client'
-import { useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom'
+import { io } from "socket.io-client";
+import { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 
-const socket = io('http://localhost:3000')
+const userName = sessionStorage.getItem("userName");
 
-function Chat () {
-  const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState([])
+const socket = io("http://localhost:3000", {
+  query: { userName: userName }
+});
+
+function Chat() {
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
   const { roomName } = useParams();
-  
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const newMessage = {
       body: message,
-      from: 'Me'
-    }
-    setMessages([...messages, newMessage])
-    socket.emit('message', message)
-    setMessage('');
-  }
-  
+      from: "Me",
+    };
+    setMessages([...messages, newMessage]);
+    socket.emit("message", message);
+    setMessage("");
+    scrollToBottom()
+  };
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
   const handleDisconnect = () => {
-    socket.disconnect()
-    window.location = '/'
-  }
+    socket.disconnect();
+    window.location = "/room";
+  };
 
   useEffect(() => {
     console.log(`Unido a la sala: ${roomName}`);
-    socket.emit('joinRoom', roomName);
+    socket.emit("joinRoom", roomName);
   }, [roomName]);
-  
+
   useEffect(() => {
-    socket.on('message', (newMessage) => {
+    socket.on("message", (newMessage) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
-    })
+    });
 
     return () => {
-      socket.off('message')
-    }
-  }, [])
+      socket.off("message");
+    };
+  }, []);
   
-    return (
-      <div className='h-screen bg-zinc-800 text-white flex items-center justify-center relative'>
-      <form onSubmit={handleSubmit} className='bg-zinc-900 p-10 absolute max-h-500'>
-          <ul>
-            {
-              messages.map((message, index) => (
-                <li key={index} className={`my-2 p-2 table text-sm rounded-md ${message.from === 'Me' ? 'bg-sky-700 ml-auto' : 'bg-black'}`}>
-                  <span className='text-xs block'>
-                    {message.from}
-                  </span>
-                  {message.body}
-                </li>
-              ))
-            }
-          </ul>
-            <input
-              type='text'
-              name='message'
-              value={message}
-              placeholder='Type a message here...'
-              onChange={(e) => setMessage(e.target.value)}
-              className='border-2 border-zinc-500 p-2 w-full text-black'
-              required
-            />
+  return (
+    <div className="h-screen bg-blue-100 flex flex-col">
+      <div className="bg-gray-800 text-white p-4 flex justify-between items-center">
+        <h1 className="text-2xl font-semibold">Chat {roomName}</h1>
+        <button
+          className="px-2 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
+          onClick={handleDisconnect}
+        >
+          Disconnect
+        </button>
+      </div>
+      <div className="flex-1 p-4 overflow-y-auto mx-4">
+        <ul>
+          {messages.map((message, index) => (
+            <li
+              key={index}
+              className={`my-10 p-5 table text-lg py-2 px-2 rounded-md ${
+                message.from === "Me" ? "bg-sky-700 ml-auto" : "bg-slate-700"
+              }`}
+            >
+              <span className="text-xs block font-bold">{message.from}</span>
+              {message.body}
+            </li>
+          ))}
+        </ul>
+        <div ref={messagesEndRef} />
+      </div>
+      <form onSubmit={handleSubmit} className="bg-white p-4">
+        <div className="flex">
+          <input
+            type="text"
+            name="message"
+            value={message}
+            placeholder="Type a message here..."
+            onChange={(e) => setMessage(e.target.value)}
+            className="border p-2 rounded-md w-full"
+            required
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-600"
+          >
+            Send
+          </button>
+        </div>
       </form>
-      <button className='absolute bottom-0 right-0	bg-blue-300 w-25 h-10' onClick={handleDisconnect}>Disconnect</button>
-
     </div>
-    )
+  );
 }
 
-export default Chat
+export default Chat;

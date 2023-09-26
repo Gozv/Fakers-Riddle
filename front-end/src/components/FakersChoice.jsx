@@ -11,7 +11,7 @@ const FakersChoice = ({ players }) => {
   };
 
   return (
-    <div>
+    <div className="flex h-screen items-center bg-green-950 justify-center">
       <h2>Selecciona un usuario:</h2>
       <ul>
         {players.map((player) => (
